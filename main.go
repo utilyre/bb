@@ -47,7 +47,7 @@ func worker(ch chan<- me.MechanicalEnergy) {
 	}
 }
 
-func run(ch chan me.MechanicalEnergy) {
+func run(ch <-chan me.MechanicalEnergy) {
 	cfg := pixelgl.WindowConfig{
 		Title:  "Bouncing Ball",
 		Bounds: pixel.R(0, 0, 800, 600),
