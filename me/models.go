@@ -18,15 +18,15 @@ func (self MechanicalEnergy) Total() float64 {
 }
 
 func (self *MechanicalEnergy) SetPotential(prev MechanicalEnergy, potential float64) {
-	// U2 + V2 - (U1 + V1) = 0
-	// V2 = U1 + V1 - U2
+	// (U2 + V2) - (U1 + V1) = 0
+	// => V2 = (U1 + V1) - U2
 	self.potential = potential
 	self.velocity = prev.Total() - self.Potential()
 }
 
 func (self *MechanicalEnergy) SetVelocity(prev MechanicalEnergy, velocity float64) {
-	// U2 + V2 - (U1 + V1) = 0
-	// U2 = U1 + V1 - V2
+	// (U2 + V2) - (U1 + V1) = 0
+	// => U2 = (U1 + V1) - V2
 	self.velocity = velocity
 	self.potential = prev.Total() - self.Velocity()
 }

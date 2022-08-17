@@ -24,26 +24,24 @@ func main() {
 }
 
 const (
-	scale = 10.0 // px/m
+	mass          = 0.5 // Kg
+	gravity       = 9.8 // m/s^2
+	initialHeight = 5.0 // m
 
-	mass          = 0.5  // Kg
-	gravity       = 9.8  // m/s^2
-	initialHeight = 40.0 // m
-
-	loss = 1000.0 // J
+	scale = 100.0 // px/m
 )
 
 func worker(ch chan<- me.MechanicalEnergy) {
-	energy := me.New(mass*gravity*(initialHeight*scale), 0)
+	energy := me.New(mass*gravity*initialHeight, 0)
 
 	last := time.Now()
 	for {
 		dt := time.Since(last).Seconds()
 		last = time.Now()
 
-		x := gravity*math.Pow(dt, 2)/2 + energy.Velocity()*dt // x = 1/2at^2 + v0t
-		h := energy.Potential()/(mass*gravity) - x
-		energy.SetPotential(energy, mass*gravity*h) // U = mgh
+		dx := gravity*math.Pow(dt, 2)/2 + energy.Velocity()*dt // x = 1/2at^2 + v0t
+		h := energy.Potential()/(mass*gravity) - dx            // h = U/(mg)
+		energy.SetPotential(energy, mass*gravity*h)            // U = mgh
 
 		ch <- energy
 	}
@@ -71,8 +69,8 @@ func run(ch chan me.MechanicalEnergy) {
 		ball.Clear()
 
 		if energy, ok := <-ch; ok {
-			height := energy.Potential() / (mass * gravity)
-			ball.Push(pixel.V(win.Bounds().Center().X, height))
+			h := (energy.Potential() / (mass * gravity)) * scale
+			ball.Push(pixel.V(win.Bounds().Center().X, h))
 		}
 		ball.Circle(10, 0)
 
