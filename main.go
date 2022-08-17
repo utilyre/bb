@@ -17,6 +17,7 @@ func main() {
 	log.SetPrefix("bb: ")
 
 	ch := make(chan me.MechanicalEnergy)
+	defer close(ch)
 
 	go worker(ch)
 	pixelgl.Run(func() { run(ch) })
