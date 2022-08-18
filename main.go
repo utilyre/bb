@@ -53,7 +53,7 @@ func worker(ch chan<- me.MechanicalEnergy) {
 
 		dx := gravity*math.Pow(dt, 2)/2 + energy.Speed()*dt    // x = 1/2at^2 + v0t
 		h := energy.Potential()/(mass*gravity) + multiplier*dx // h = U/(mg)
-		energy.SetPotential(energy, mass*gravity*h)            // U = mgh
+		energy.SetPotential(mass * gravity * h)                // U = mgh
 
 		ch <- energy
 	}

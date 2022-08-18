@@ -26,14 +26,18 @@ func (self *MechanicalEnergy) SetFalling(isFalling bool) {
 	self.isFalling = isFalling
 }
 
-func (self *MechanicalEnergy) SetPotential(prev MechanicalEnergy, potential float64) {
+func (self *MechanicalEnergy) SetPotential(potential float64) {
+	prev := *self
+
 	// (U2 + V2) - (U1 + V1) = 0
 	// => V2 = (U1 + V1) - U2
 	self.potential = potential
 	self.speed = prev.Total() - self.Potential()
 }
 
-func (self *MechanicalEnergy) SetSpeed(prev MechanicalEnergy, speed float64) {
+func (self *MechanicalEnergy) SetSpeed(speed float64) {
+	prev := *self
+
 	// (U2 + V2) - (U1 + V1) = 0
 	// => U2 = (U1 + V1) - V2
 	self.speed = speed
