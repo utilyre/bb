@@ -27,12 +27,12 @@ func main() {
 }
 
 const (
-	radius        = 0.3 // m
-	mass          = 0.5 // kg
-	gravity       = 9.8 // m/s^2
-	initialHeight = 5.0 // m
+	radius        = 0.25 // m
+	mass          = 0.5  // kg
+	gravity       = 9.8  // m/s^2
+	initialHeight = 2.0  // m
 
-	scale = 100.0 // px/m
+	scale = 200.0 // px/m
 )
 
 func worker(ch chan<- me.MechanicalEnergy) {
@@ -85,14 +85,14 @@ func run(ch <-chan me.MechanicalEnergy) {
 	basketball := pixel.NewSprite(pic, pic.Bounds())
 
 	for !win.Closed() {
-		win.Clear(color.RGBA{R: 42, G: 157, B: 143, A: 255})
+		win.Clear(color.RGBA{R: 43, G: 45, B: 66, A: 255})
 
 		if energy, ok := <-ch; ok {
 			h := (energy.Potential() / (mass * gravity)) * scale
 
 			basketball.Draw(
 				win,
-				pixel.IM.Scaled(pixel.ZV, radius*scale/128).Moved(pixel.V(win.Bounds().Center().X, h)),
+				pixel.IM.Scaled(pixel.ZV, radius*2*scale/128).Moved(pixel.V(win.Bounds().Center().X, h)),
 			)
 		}
 
