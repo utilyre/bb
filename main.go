@@ -84,7 +84,7 @@ func run(ch <-chan me.MechanicalEnergy) {
 			h := (energy.Potential() / (mass * gravity)) * scale
 			ball.Push(pixel.V(win.Bounds().Center().X, h))
 		}
-		ball.Circle(10, 0)
+		ball.Circle(0.2*scale, 0)
 
 		ball.Draw(win)
 		win.Update()
