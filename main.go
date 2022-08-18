@@ -1,13 +1,16 @@
 package main
 
 import (
+	"image"
 	"image/color"
 	"log"
 	"math"
+	"os"
 	"time"
 
+	_ "image/png"
+
 	"github.com/faiface/pixel"
-	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/utilyre/bb/me"
 )
@@ -24,7 +27,8 @@ func main() {
 }
 
 const (
-	mass          = 0.5 // Kg
+	radius        = 0.3 // m
+	mass          = 0.5 // kg
 	gravity       = 9.8 // m/s^2
 	initialHeight = 5.0 // m
 
@@ -73,20 +77,40 @@ func run(ch <-chan me.MechanicalEnergy) {
 
 	win.SetSmooth(true)
 
-	ball := imdraw.New(nil)
-	ball.Color = color.RGBA{R: 38, G: 70, B: 83, A: 255}
+	pic, err := loadPicture("assets/basketball.png")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	basketball := pixel.NewSprite(pic, pic.Bounds())
 
 	for !win.Closed() {
 		win.Clear(color.RGBA{R: 42, G: 157, B: 143, A: 255})
-		ball.Clear()
 
 		if energy, ok := <-ch; ok {
 			h := (energy.Potential() / (mass * gravity)) * scale
-			ball.Push(pixel.V(win.Bounds().Center().X, h))
-		}
-		ball.Circle(0.2*scale, 0)
 
-		ball.Draw(win)
+			basketball.Draw(
+				win,
+				pixel.IM.Scaled(pixel.ZV, radius*scale/128).Moved(pixel.V(win.Bounds().Center().X, h)),
+			)
+		}
+
 		win.Update()
 	}
+}
+
+func loadPicture(filename string) (pixel.Picture, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	img, _, err := image.Decode(file)
+	if err != nil {
+		return nil, err
+	}
+
+	return pixel.PictureDataFromImage(img), nil
 }
