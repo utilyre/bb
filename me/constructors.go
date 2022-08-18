@@ -1,8 +1,8 @@
 package me
 
-func New(potential, velocity float64) MechanicalEnergy {
+func New(potential, speed float64) MechanicalEnergy {
 	return MechanicalEnergy{
 		potential: potential,
-		velocity:  velocity,
+		speed:     speed,
 	}
 }
