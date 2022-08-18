@@ -85,7 +85,15 @@ func run(ch <-chan me.MechanicalEnergy) {
 
 			basketball.Draw(
 				win,
-				pixel.IM.Scaled(pixel.ZV, radius*2*scale/128).Moved(pixel.V(win.Bounds().Center().X, h)),
+				pixel.IM.Scaled(
+					pixel.ZV,
+					2*radius*scale/128,
+				).Moved(
+					pixel.V(
+						win.Bounds().Center().X,
+						h+radius*scale,
+					),
+				),
 			)
 		}
 
