@@ -43,13 +43,6 @@ func worker(ch chan<- me.MechanicalEnergy) {
 		dt := time.Since(last).Seconds()
 		last = time.Now()
 
-		if energy.Potential() <= 0 {
-			energy.SetFalling(false)
-		}
-		if energy.Speed() <= 0 {
-			energy.SetFalling(true)
-		}
-
 		multiplier := 1.0
 		if energy.IsFalling() {
 			multiplier = -1.0
