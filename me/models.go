@@ -6,6 +6,10 @@ type MechanicalEnergy struct {
 	speed     float64
 }
 
+func (self MechanicalEnergy) IsFalling() bool {
+	return self.isFalling
+}
+
 func (self MechanicalEnergy) Potential() float64 {
 	return self.potential
 }
