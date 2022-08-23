@@ -40,9 +40,9 @@ func worker(ch chan<- energy.Energy) {
 			multiplier = -1.0
 		}
 
-		dx := config.Gravity*math.Pow(dt, 2)/2 + energy.Speed()*dt           // x = 1/2at^2 + v0t
-		h := energy.Potential()/(config.Mass*config.Gravity) + multiplier*dx // h = U/(mg)
-		energy.SetPotential(config.Mass * config.Gravity * h)                // U = mgh
+		dx := config.Gravity*math.Pow(dt, 2)/2 + energy.Speed()*dt
+		h := energy.Potential()/(config.Mass*config.Gravity) + multiplier*dx
+		energy.SetPotential(config.Mass * config.Gravity * h)
 
 		ch <- energy
 	}

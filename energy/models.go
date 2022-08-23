@@ -22,8 +22,6 @@ func (self *energy) Mechanical() float64 {
 	return self.potential + self.speed
 }
 
-// (U2 + V2) - (U1 + V1) = 0
-// => V2 = (U1 + V1) - U2
 func (self *energy) SetPotential(potential float64) {
 	prev := *self
 
