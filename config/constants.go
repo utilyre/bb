@@ -19,5 +19,5 @@ const (
 
 	// Initial height of basketball
 	// Unit: m
-	InitialHeight float64 = 2.0 // m
+	InitialHeight float64 = 2.0
 )
