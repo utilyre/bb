@@ -51,7 +51,7 @@ func worker(ch chan<- energy.Energy) {
 func run(ch <-chan energy.Energy) {
 	cfg := pixelgl.WindowConfig{
 		Title:  "Bouncing Ball",
-		Bounds: pixel.R(0, 0, 800, 600),
+		Bounds: pixel.R(0, 0, 2*config.Scale, (config.InitialHeight+1)*config.Scale),
 		VSync:  true,
 	}
 
