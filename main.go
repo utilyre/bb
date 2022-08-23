@@ -12,6 +12,7 @@ import (
 
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
+	"github.com/utilyre/bb/config"
 	"github.com/utilyre/bb/energy"
 )
 
@@ -26,19 +27,8 @@ func main() {
 	pixelgl.Run(func() { run(ch) })
 }
 
-const (
-	radius  = 0.25 // m
-	mass    = 0.5  // kg
-	gravity = 9.8  // m/s^2
-
-	initialHeight = 2.0 // m
-	energyLoss    = 2.0 // j
-
-	scale = 200.0 // px/m
-)
-
 func worker(ch chan<- energy.Energy) {
-	energy := energy.NewEnergy(mass*gravity*initialHeight, 0)
+	energy := energy.NewEnergy(config.Mass*config.Gravity*config.InitialHeight, 0)
 
 	last := time.Now()
 	for {
@@ -50,9 +40,9 @@ func worker(ch chan<- energy.Energy) {
 			multiplier = -1.0
 		}
 
-		dx := gravity*math.Pow(dt, 2)/2 + energy.Speed()*dt    // x = 1/2at^2 + v0t
-		h := energy.Potential()/(mass*gravity) + multiplier*dx // h = U/(mg)
-		energy.SetPotential(mass * gravity * h)                // U = mgh
+		dx := config.Gravity*math.Pow(dt, 2)/2 + energy.Speed()*dt           // x = 1/2at^2 + v0t
+		h := energy.Potential()/(config.Mass*config.Gravity) + multiplier*dx // h = U/(mg)
+		energy.SetPotential(config.Mass * config.Gravity * h)                // U = mgh
 
 		ch <- energy
 	}
@@ -83,17 +73,17 @@ func run(ch <-chan energy.Energy) {
 		win.Clear(color.RGBA{R: 43, G: 45, B: 66, A: 255})
 
 		if energy, ok := <-ch; ok {
-			h := (energy.Potential() / (mass * gravity)) * scale
+			h := (energy.Potential() / (config.Mass * config.Gravity)) * config.Scale
 
 			basketball.Draw(
 				win,
 				pixel.IM.Scaled(
 					pixel.ZV,
-					2*radius*scale/128,
+					2*config.Radius*config.Scale/128,
 				).Moved(
 					pixel.V(
 						win.Bounds().Center().X,
-						h+radius*scale,
+						h+config.Radius*config.Scale,
 					),
 				),
 			)
