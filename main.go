@@ -12,14 +12,14 @@ import (
 
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
-	"github.com/utilyre/bb/me"
+	"github.com/utilyre/bb/energy"
 )
 
 func main() {
 	log.SetFlags(0)
 	log.SetPrefix("bb: ")
 
-	ch := make(chan me.MechanicalEnergy)
+	ch := make(chan energy.Energy)
 	defer close(ch)
 
 	go worker(ch)
@@ -27,16 +27,18 @@ func main() {
 }
 
 const (
-	radius        = 0.25 // m
-	mass          = 0.5  // kg
-	gravity       = 9.8  // m/s^2
-	initialHeight = 2.0  // m
+	radius  = 0.25 // m
+	mass    = 0.5  // kg
+	gravity = 9.8  // m/s^2
+
+	initialHeight = 2.0 // m
+	energyLoss    = 2.0 // j
 
 	scale = 200.0 // px/m
 )
 
-func worker(ch chan<- me.MechanicalEnergy) {
-	energy := me.New(mass*gravity*initialHeight, 0)
+func worker(ch chan<- energy.Energy) {
+	energy := energy.NewEnergy(mass*gravity*initialHeight, 0)
 
 	last := time.Now()
 	for {
@@ -56,7 +58,7 @@ func worker(ch chan<- me.MechanicalEnergy) {
 	}
 }
 
-func run(ch <-chan me.MechanicalEnergy) {
+func run(ch <-chan energy.Energy) {
 	cfg := pixelgl.WindowConfig{
 		Title:  "Bouncing Ball",
 		Bounds: pixel.R(0, 0, 800, 600),
