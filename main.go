@@ -35,13 +35,13 @@ func worker(ch chan<- energy.Energy) {
 		dt := time.Since(last).Seconds()
 		last = time.Now()
 
-		multiplier := 1.0
+		coefficient := 1.0
 		if energy.IsFalling() {
-			multiplier = -1.0
+			coefficient = -1.0
 		}
 
 		dx := config.Gravity*math.Pow(dt, 2)/2 + energy.Speed()*dt
-		h := energy.Potential()/(config.Mass*config.Gravity) + multiplier*dx
+		h := energy.Potential()/(config.Mass*config.Gravity) + coefficient*dx
 		energy.SetPotential(config.Mass * config.Gravity * h)
 
 		ch <- energy
