@@ -28,7 +28,7 @@ func main() {
 }
 
 func worker(ch chan<- energy.Energy) {
-	energy := energy.NewEnergy(config.Mass*config.Gravity*config.InitialHeight, 0)
+	energy := energy.NewEnergy(config.Mass*config.Gravity*config.InitialHeight, 0) // ΔU = mgΔh
 
 	last := time.Now()
 	for {
@@ -40,9 +40,9 @@ func worker(ch chan<- energy.Energy) {
 			coefficient = -1.0
 		}
 
-		dx := config.Gravity*math.Pow(dt, 2)/2 + energy.Speed()*dt
-		h := energy.Potential()/(config.Mass*config.Gravity) + coefficient*dx
-		energy.SetPotential(config.Mass * config.Gravity * h)
+		dx := config.Gravity*math.Pow(dt, 2)/2 + energy.Speed()*dt            // Δx = 1/2aΔt² + v₀Δt
+		h := energy.Potential()/(config.Mass*config.Gravity) + coefficient*dx // Δh = ΔU / (mg)
+		energy.SetPotential(config.Mass * config.Gravity * h)                 // ΔU = mgΔh
 
 		ch <- energy
 	}
@@ -73,7 +73,7 @@ func run(ch <-chan energy.Energy) {
 		win.Clear(color.RGBA{R: 43, G: 45, B: 66, A: 255})
 
 		if energy, ok := <-ch; ok {
-			h := (energy.Potential() / (config.Mass * config.Gravity)) * config.Scale
+			h := (energy.Potential() / (config.Mass * config.Gravity) /* Δh = ΔU / (mg) */) * config.Scale
 
 			basketball.Draw(
 				win,

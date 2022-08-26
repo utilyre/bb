@@ -26,7 +26,7 @@ func (self *energy) SetPotential(potential float64) {
 	prev := *self
 
 	self.potential = potential
-	self.speed = prev.Mechanical() - self.Potential()
+	self.speed = prev.Mechanical() - self.Potential() // V₂ = E₁ - U₂
 
 	if self.Potential() <= 0 {
 		self.isFalling = false
