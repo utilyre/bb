@@ -34,4 +34,8 @@ func (self *energy) SetPotential(potential float64) {
 	if self.Speed() <= 0 {
 		self.isFalling = true
 	}
+
+	if prev.IsFalling() && !self.IsFalling() {
+		self.speed -= self.speed * 0.4
+	}
 }
