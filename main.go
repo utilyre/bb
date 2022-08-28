@@ -20,14 +20,14 @@ func main() {
 	log.SetFlags(0)
 	log.SetPrefix("bb: ")
 
-	ch := make(chan energy.Energy)
-	defer close(ch)
+	sync := make(chan energy.Energy)
+	defer close(sync)
 
-	go worker(ch)
-	pixelgl.Run(func() { run(ch) })
+	go updater(sync)
+	pixelgl.Run(func() { renderer(sync) })
 }
 
-func worker(ch chan<- energy.Energy) {
+func updater(sync chan<- energy.Energy) {
 	energy := energy.NewEnergy(config.Mass*config.Gravity*config.InitialHeight, 0) // ΔU = mgΔh
 
 	last := time.Now()
@@ -44,11 +44,11 @@ func worker(ch chan<- energy.Energy) {
 		h := energy.Potential()/(config.Mass*config.Gravity) + coefficient*dx // Δh = ΔU / (mg)
 		energy.SetPotential(config.Mass * config.Gravity * h)                 // ΔU = mgΔh
 
-		ch <- energy
+		sync <- energy
 	}
 }
 
-func run(ch <-chan energy.Energy) {
+func renderer(sync <-chan energy.Energy) {
 	cfg := pixelgl.WindowConfig{
 		Title:  "Bouncing Ball",
 		Bounds: pixel.R(0, 0, 2*config.Scale, (config.InitialHeight+1)*config.Scale),
@@ -72,7 +72,7 @@ func run(ch <-chan energy.Energy) {
 	for !win.Closed() {
 		win.Clear(color.RGBA{R: 43, G: 45, B: 66, A: 255})
 
-		if energy, ok := <-ch; ok {
+		if energy, ok := <-sync; ok {
 			h := (energy.Potential() / (config.Mass * config.Gravity) /* Δh = ΔU / (mg) */) * config.Scale
 
 			basketball.Draw(
