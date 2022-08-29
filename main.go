@@ -6,6 +6,7 @@ import (
 	"log"
 	"math"
 	"os"
+	"path/filepath"
 	"time"
 
 	_ "image/png"
@@ -62,7 +63,7 @@ func renderer(sync <-chan energy.Energy) {
 
 	win.SetSmooth(true)
 
-	pic, err := loadPicture("assets/basketball.png")
+	pic, err := loadPicture(filepath.Join("assets", "basketball.png"))
 	if err != nil {
 		log.Fatalln(err)
 	}
