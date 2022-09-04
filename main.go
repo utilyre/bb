@@ -17,39 +17,36 @@ import (
 	"github.com/utilyre/bb/energy"
 )
 
+var instance energy.Energy = energy.NewEnergy(config.Mass*config.Gravity*config.InitialHeight, 0) // ΔU = mgΔh
+
 func main() {
 	log.SetFlags(0)
 	log.SetPrefix("bb: ")
 
-	sync := make(chan energy.Energy)
-	defer close(sync)
-
-	go updater(sync)
-	pixelgl.Run(func() { renderer(sync) })
+	go updater()
+	pixelgl.Run(renderer)
 }
 
-func updater(sync chan<- energy.Energy) {
-	energy := energy.NewEnergy(config.Mass*config.Gravity*config.InitialHeight, 0) // ΔU = mgΔh
-
+func updater() {
 	last := time.Now()
 	for {
 		dt := time.Since(last).Seconds()
 		last = time.Now()
 
 		coefficient := 1.0
-		if energy.IsFalling() {
+		if instance.IsFalling() {
 			coefficient = -1.0
 		}
 
-		dx := config.Gravity*math.Pow(dt, 2)/2 + energy.Speed()*dt            // Δx = 1/2aΔt² + v₀Δt
-		h := energy.Potential()/(config.Mass*config.Gravity) + coefficient*dx // Δh = ΔU / (mg)
-		energy.SetPotential(config.Mass * config.Gravity * h)                 // ΔU = mgΔh
+		dx := config.Gravity*math.Pow(dt, 2)/2 + instance.Speed()*dt            // Δx = 1/2aΔt² + v₀Δt
+		h := instance.Potential()/(config.Mass*config.Gravity) + coefficient*dx // Δh = ΔU / (mg)
+		instance.SetPotential(config.Mass * config.Gravity * h)                 // ΔU = mgΔh
 
-		sync <- energy
+		time.Sleep(5 * time.Millisecond)
 	}
 }
 
-func renderer(sync <-chan energy.Energy) {
+func renderer() {
 	cfg := pixelgl.WindowConfig{
 		Title:  "Bouncing Ball",
 		Bounds: pixel.R(0, 0, 2*config.Scale, (config.InitialHeight+1)*config.Scale),
@@ -73,22 +70,20 @@ func renderer(sync <-chan energy.Energy) {
 	for !win.Closed() {
 		win.Clear(color.RGBA{R: 43, G: 45, B: 66, A: 255})
 
-		if energy, ok := <-sync; ok {
-			h := (energy.Potential() / (config.Mass * config.Gravity) /* Δh = ΔU / (mg) */) * config.Scale
+		h := (instance.Potential() / (config.Mass * config.Gravity) /* Δh = ΔU / (mg) */) * config.Scale
 
-			basketball.Draw(
-				win,
-				pixel.IM.Scaled(
-					pixel.ZV,
-					2*config.Radius*config.Scale/128,
-				).Moved(
-					pixel.V(
-						win.Bounds().Center().X,
-						h+config.Radius*config.Scale,
-					),
+		basketball.Draw(
+			win,
+			pixel.IM.Scaled(
+				pixel.ZV,
+				2*config.Radius*config.Scale/128,
+			).Moved(
+				pixel.V(
+					win.Bounds().Center().X,
+					h+config.Radius*config.Scale,
 				),
-			)
-		}
+			),
+		)
 
 		win.Update()
 	}
