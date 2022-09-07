@@ -81,6 +81,10 @@ func renderer() {
 			isStopped = !isStopped
 		}
 
+		if win.JustPressed(pixelgl.KeyQ) {
+			win.SetClosed(true)
+		}
+
 		h := (erg.Potential() / (config.Mass * config.Gravity) /* Δh = ΔU / (mg) */) * config.Scale
 		basketball.Draw(
 			win,
