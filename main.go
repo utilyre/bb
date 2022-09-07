@@ -17,7 +17,7 @@ import (
 	"github.com/utilyre/bb/energy"
 )
 
-var instance energy.Energy = energy.NewEnergy(config.Mass*config.Gravity*config.InitialHeight, 0) // ΔU = mgΔh
+var erg energy.Energy = energy.NewEnergy(config.Mass*config.Gravity*config.InitialHeight, 0) // ΔU = mgΔh
 
 func main() {
 	log.SetFlags(0)
@@ -34,13 +34,13 @@ func updater() {
 		last = time.Now()
 
 		coefficient := 1.0
-		if instance.IsFalling() {
+		if erg.IsFalling() {
 			coefficient = -1.0
 		}
 
-		dx := config.Gravity*math.Pow(dt, 2)/2 + instance.Speed()*dt            // Δx = 1/2aΔt² + v₀Δt
-		h := instance.Potential()/(config.Mass*config.Gravity) + coefficient*dx // Δh = ΔU / (mg)
-		instance.SetPotential(config.Mass * config.Gravity * h)                 // ΔU = mgΔh
+		dx := config.Gravity*math.Pow(dt, 2)/2 + erg.Speed()*dt            // Δx = 1/2aΔt² + v₀Δt
+		h := erg.Potential()/(config.Mass*config.Gravity) + coefficient*dx // Δh = ΔU / (mg)
+		erg.SetPotential(config.Mass * config.Gravity * h)                 // ΔU = mgΔh
 
 		time.Sleep(5 * time.Millisecond)
 	}
@@ -70,7 +70,7 @@ func renderer() {
 	for !win.Closed() {
 		win.Clear(color.RGBA{R: 43, G: 45, B: 66, A: 255})
 
-		h := (instance.Potential() / (config.Mass * config.Gravity) /* Δh = ΔU / (mg) */) * config.Scale
+		h := (erg.Potential() / (config.Mass * config.Gravity) /* Δh = ΔU / (mg) */) * config.Scale
 
 		basketball.Draw(
 			win,
