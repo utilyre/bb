@@ -47,8 +47,8 @@ func updater() {
 			coefficient = -1.0
 		}
 
-		dx := config.Gravity*math.Pow(dt, 2)/2 + erg.Speed()*dt            // Δx = 1/2aΔt² + v₀Δt
-		h := erg.Potential()/(config.Mass*config.Gravity) + coefficient*dx // Δh = ΔU / (mg)
+		dy := config.Gravity*math.Pow(dt, 2)/2 + erg.Speed()*dt            // Δx = 1/2aΔt² + V₀Δt
+		h := erg.Potential()/(config.Mass*config.Gravity) + coefficient*dy // Δh = ΔU / (mg)
 		erg.SetPotential(config.Mass * config.Gravity * h)                 // ΔU = mgΔh
 	}
 }
