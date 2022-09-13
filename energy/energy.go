@@ -57,4 +57,8 @@ func (e *energy) SetPotential(potential float64) {
 	if e.Kinetic() == 0 {
 		e.isFalling = true
 	}
+
+	if e0.IsFalling() && !e.IsFalling() {
+		e.kinetic = 0.8 * e.Kinetic()
+	}
 }
