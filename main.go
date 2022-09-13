@@ -35,13 +35,16 @@ func updater() {
 	for {
 		time.Sleep(5 * time.Millisecond)
 
+		// Calculates elapsed time
 		dt := time.Since(last).Seconds()
 		last = time.Now()
 
+		// Won't do any calculations if is stopped
 		if isStopped {
 			continue
 		}
 
+		// Variable coefficient is used to whether sum or subtract dislocation
 		coefficient := 1.0
 		if erg.IsFalling() {
 			coefficient = -1.0
