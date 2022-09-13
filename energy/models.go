@@ -3,7 +3,7 @@ package energy
 type energy struct {
 	isFalling bool
 	potential float64
-	speed     float64
+	kinetic   float64
 }
 
 func (e *energy) IsFalling() bool {
@@ -14,28 +14,31 @@ func (e *energy) Potential() float64 {
 	return e.potential
 }
 
-func (e *energy) Speed() float64 {
-	return e.speed
+func (e *energy) Kinetic() float64 {
+	return e.kinetic
 }
 
 func (e *energy) Mechanical() float64 {
-	return e.potential + e.speed
+	return e.Potential() + e.Kinetic()
 }
 
-func (e2 *energy) SetPotential(potential float64) {
-	e1 := *e2
+func (e *energy) SetPotential(potential float64) {
+	e0 := *e
 
-	e2.potential = potential
-	e2.speed = e1.Mechanical() - e2.Potential() // V₂ = E₁ - U₂
+	e.potential = potential
+	e.kinetic = e0.Mechanical() - e.Potential() // K₁ = E₀ - U₁
 
-	if e2.Potential() <= 0 {
-		e2.isFalling = false
+	if e.Potential() < 0 {
+		e.potential = 0
 	}
-	if e2.Speed() <= 0 {
-		e2.isFalling = true
+	if e.Kinetic() < 0 {
+		e.kinetic = 0
 	}
 
-	if e1.IsFalling() && !e2.IsFalling() {
-		e2.speed -= e2.speed * 0.4
+	if e.Potential() == 0 {
+		e.isFalling = false
+	}
+	if e.Kinetic() == 0 {
+		e.isFalling = true
 	}
 }
