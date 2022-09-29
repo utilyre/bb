@@ -79,7 +79,11 @@ func renderer() {
 
 	basketball := pixel.NewSprite(pic, pic.Bounds())
 
+	last := time.Now()
 	for !win.Closed() {
+		dt := time.Since(last).Seconds()
+		last = time.Now()
+
 		win.Clear(color.RGBA{R: 43, G: 45, B: 66, A: 255})
 
 		if win.JustPressed(pixelgl.KeyEscape) {
@@ -88,6 +92,13 @@ func renderer() {
 
 		if win.JustPressed(pixelgl.KeySpace) {
 			isStopped = !isStopped
+		}
+
+		if win.Pressed(pixelgl.KeyW) {
+			erg.ExertForce(config.Mass, config.Force, dt)
+		}
+		if win.Pressed(pixelgl.KeyS) {
+			erg.ExertForce(config.Mass, -config.Force, dt)
 		}
 
 		h := (erg.Potential() / (config.Mass * config.Gravity) /* Δh = ΔU / (mg) */) * config.Scale

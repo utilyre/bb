@@ -1,5 +1,7 @@
 package energy
 
+import "math"
+
 type Energy interface {
 	// Returns falling status.
 	IsFalling() bool
@@ -16,6 +18,10 @@ type Energy interface {
 	// Sets potential energy.
 	// Has a side effect on falling status and kinetic energy.
 	SetPotential(potential float64)
+
+	// Exerts force on object.
+	// Has a side effect on falling status and kinetic energy.
+	ExertForce(mass, force, time float64)
 }
 
 type energy struct {
@@ -76,4 +82,21 @@ func (e *energy) SetPotential(potential float64) {
 	if e.Potential() == 0 {
 		e.kinetic = 0.8 * e.Kinetic()
 	}
+}
+
+func (e *energy) ExertForce(mass, force, time float64) {
+	v0 := math.Sqrt(2 * e.Kinetic() / mass) // V = √(2K/m)
+	dv := math.Abs(force) * time / mass     // ΔV = fΔt/m
+
+	coefficient := 1.0
+	if (e.IsFalling() && force > 0) || (!e.IsFalling() && force < 0) {
+		coefficient = -1.0
+	}
+
+	v := v0 + coefficient*dv
+	if v < 0 {
+		e.isFalling = !e.IsFalling()
+	}
+
+	e.kinetic = mass * math.Pow(v, 2) / 2
 }

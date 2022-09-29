@@ -20,4 +20,8 @@ const (
 	// Initial height of basketball
 	// Unit: m
 	InitialHeight float64 = 2.0
+
+	// Amount of force to be exerted
+	// Unit: N
+	Force float64 = 5.0
 )
