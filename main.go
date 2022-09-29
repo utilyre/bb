@@ -119,8 +119,8 @@ func renderer() {
 	}
 }
 
-func loadPicture(filename string) (pixel.Picture, error) {
-	file, err := os.Open(filename)
+func loadPicture(name string) (pixel.Picture, error) {
+	file, err := os.Open(name)
 	if err != nil {
 		return nil, err
 	}
