@@ -94,11 +94,14 @@ func renderer() {
 			isStopped = !isStopped
 		}
 
-		if win.Pressed(pixelgl.KeyW) {
-			erg.ExertForce(config.Mass, config.Force, dt)
-		}
-		if win.Pressed(pixelgl.KeyS) {
-			erg.ExertForce(config.Mass, -config.Force, dt)
+		if !isStopped {
+			if win.Pressed(pixelgl.KeyW) {
+				erg.ExertForce(config.Mass, config.Force, dt)
+			}
+
+			if win.Pressed(pixelgl.KeyS) {
+				erg.ExertForce(config.Mass, -config.Force, dt)
+			}
 		}
 
 		h := (erg.Potential() / (config.Mass * config.Gravity) /* Δh = ΔU / (mg) */) * config.Scale
