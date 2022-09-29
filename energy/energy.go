@@ -72,7 +72,7 @@ func (e *energy) SetPotential(potential float64) {
 
 	// Subtracts wasted energy from kinetic energy whenever object hits the ground
 	// BEWARE: This is a workaround and is not according to physics
-	if e0.IsFalling() && !e.IsFalling() {
+	if e.Potential() == 0 {
 		e.kinetic = 0.8 * e.Kinetic()
 	}
 }
