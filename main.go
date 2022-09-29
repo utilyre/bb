@@ -82,12 +82,12 @@ func renderer() {
 	for !win.Closed() {
 		win.Clear(color.RGBA{R: 43, G: 45, B: 66, A: 255})
 
-		if win.JustPressed(pixelgl.KeySpace) {
-			isStopped = !isStopped
+		if win.JustPressed(pixelgl.KeyEscape) {
+			win.SetClosed(true)
 		}
 
-		if win.JustPressed(pixelgl.KeyQ) {
-			win.SetClosed(true)
+		if win.JustPressed(pixelgl.KeySpace) {
+			isStopped = !isStopped
 		}
 
 		h := (erg.Potential() / (config.Mass * config.Gravity) /* Δh = ΔU / (mg) */) * config.Scale
