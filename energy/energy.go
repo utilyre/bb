@@ -1,19 +1,20 @@
 package energy
 
 type Energy interface {
-	// Returns falling status
+	// Returns falling status.
 	IsFalling() bool
 
-	// Returns potential energy
+	// Returns potential energy.
 	Potential() float64
 
-	// Returns kinetic energy
+	// Returns kinetic energy.
 	Kinetic() float64
 
-	// Returns mechanical energy
+	// Returns mechanical energy.
 	Mechanical() float64
 
-	// Sets potential energy and has side effect on kinetic energy
+	// Sets potential energy.
+	// Has a side effect on falling status and kinetic energy.
 	SetPotential(potential float64)
 }
 
