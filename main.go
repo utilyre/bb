@@ -109,7 +109,7 @@ func renderer() {
 			win,
 			pixel.IM.Scaled(
 				pixel.ZV,
-				2*config.Radius*config.Scale/128,
+				2*config.Radius*config.Scale/102,
 			).Moved(
 				pixel.V(
 					win.Bounds().Center().X,
