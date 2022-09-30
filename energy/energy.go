@@ -21,18 +21,20 @@ type Energy interface {
 
 	// Exerts force on object.
 	// Has a side effect on falling status and kinetic energy.
-	ExertForce(mass, force, time float64)
+	ExertForce(force, time float64)
 }
 
 type energy struct {
 	isFalling bool
+	mass      float64
 	potential float64
 	kinetic   float64
 }
 
-func NewEnergy(potential, kinetic float64) Energy {
+func NewEnergy(mass, potential, kinetic float64) Energy {
 	return &energy{
 		isFalling: true,
+		mass:      mass,
 		potential: potential,
 		kinetic:   kinetic,
 	}
@@ -84,9 +86,9 @@ func (e *energy) SetPotential(potential float64) {
 	}
 }
 
-func (e *energy) ExertForce(mass, force, time float64) {
-	v0 := math.Sqrt(2 * e.Kinetic() / mass) // V = √(2K/m)
-	dv := math.Abs(force) * time / mass     // ΔV = fΔt/m
+func (e *energy) ExertForce(force, time float64) {
+	v0 := math.Sqrt(2 * e.Kinetic() / e.mass) // V = √(2K/m)
+	dv := math.Abs(force) * time / e.mass     // ΔV = fΔt/m
 
 	coefficient := 1.0
 	if (e.IsFalling() && force > 0) || (!e.IsFalling() && force < 0) {
@@ -98,5 +100,5 @@ func (e *energy) ExertForce(mass, force, time float64) {
 		e.isFalling = !e.IsFalling()
 	}
 
-	e.kinetic = mass * math.Pow(v, 2) / 2
+	e.kinetic = e.mass * math.Pow(v, 2) / 2
 }

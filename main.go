@@ -18,8 +18,13 @@ import (
 )
 
 var (
-	isStopped bool          = true
-	erg       energy.Energy = energy.NewEnergy(config.Mass*config.Gravity*config.InitialHeight, 0) // ΔU = mgΔh
+	isStopped bool = true
+
+	erg energy.Energy = energy.NewEnergy(
+		config.Mass,
+		config.Mass*config.Gravity*config.InitialHeight, // ΔU = mgΔh
+		0,
+	)
 )
 
 func main() {
@@ -96,11 +101,11 @@ func renderer() {
 
 		if !isStopped {
 			if win.Pressed(pixelgl.KeyW) {
-				erg.ExertForce(config.Mass, config.Force, dt)
+				erg.ExertForce(config.Force, dt)
 			}
 
 			if win.Pressed(pixelgl.KeyS) {
-				erg.ExertForce(config.Mass, -config.Force, dt)
+				erg.ExertForce(-config.Force, dt)
 			}
 		}
 
