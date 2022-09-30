@@ -3,7 +3,7 @@ package config
 const (
 	// How many pixels are a meter
 	// Unit: px/m
-	Scale float64 = 200.0
+	Scale float64 = 150.0
 
 	// Radius of basketball
 	// Unit: m
@@ -23,5 +23,5 @@ const (
 
 	// Amount of force to be exerted
 	// Unit: N
-	Force float64 = 5.0
+	Force float64 = 8.0
 )
