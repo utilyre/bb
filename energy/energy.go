@@ -73,7 +73,7 @@ func (e *energy) SetPotential(potential float64) {
 	if e.Potential() < 0 {
 		e.potential = 0
 	}
-	if e.Kinetic() < 0 {
+	if e.Kinetic() < 0.0005 {
 		e.kinetic = 0
 	}
 
