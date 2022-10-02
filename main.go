@@ -49,7 +49,7 @@ func updater() {
 			continue
 		}
 
-		dx := 0.5*config.Gravity*math.Pow(dt, 2) + erg.Velocity()*dt
+		dx := 0.5*config.Gravity*math.Pow(dt, 2) + erg.Velocity()*dt // Δx = 1/2aΔt² + V₀Δt
 		h := (erg.Potential() / (config.Mass * math.Abs(config.Gravity)) /* Δh = ΔU / (mg) */) + dx
 
 		erg.SetPotential(config.Mass * math.Abs(config.Gravity) * h) // ΔU = mgΔh
