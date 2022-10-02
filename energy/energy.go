@@ -12,7 +12,10 @@ type Energy interface {
 	// Returns kinetic energy.
 	Kinetic() float64
 
-	// Returns mechanical energy.
+	// Calculates and returns velocity.
+	Velocity() float64
+
+	// Calculates and returns mechanical energy.
 	Mechanical() float64
 
 	// Sets potential energy.
@@ -52,6 +55,16 @@ func (e *energy) Kinetic() float64 {
 	return e.kinetic
 }
 
+func (e *energy) Velocity() float64 {
+	coefficient := 1.0
+	if e.IsFalling() {
+		coefficient = -1.0
+	}
+
+	return coefficient *
+		math.Sqrt(2*e.Kinetic()/e.mass) // V = √(2K/m)
+}
+
 func (e *energy) Mechanical() float64 {
 	return e.Potential() + e.Kinetic()
 }
@@ -87,16 +100,11 @@ func (e *energy) SetPotential(potential float64) {
 }
 
 func (e *energy) ExertForce(force, time float64) {
-	v0 := math.Sqrt(2 * e.Kinetic() / e.mass) // V = √(2K/m)
-	dv := math.Abs(force) * time / e.mass     // ΔV = fΔt/m
+	v0 := e.Velocity()
+	dv := force * time / e.mass // ΔV = fΔt/m
 
-	coefficient := 1.0
-	if (e.IsFalling() && force > 0) || (!e.IsFalling() && force < 0) {
-		coefficient = -1.0
-	}
-
-	v := v0 + coefficient*dv
-	if v < 0 {
+	v := v0 + dv
+	if v0*dv <= 0 && math.Abs(dv) > math.Abs(v0) {
 		e.isFalling = !e.IsFalling()
 	}
 
