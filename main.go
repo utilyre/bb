@@ -49,15 +49,8 @@ func updater() {
 			continue
 		}
 
-		// Variable coefficient is used to whether sum or subtract dislocation
-		coefficient := 1.0
-		if erg.IsFalling() {
-			coefficient = -1.0
-		}
-
-		v0 := math.Sqrt(2 * erg.Kinetic() / config.Mass)                   // V = √(2K/m)
-		dy := config.Gravity*math.Pow(dt, 2)/2 + v0*dt                     // Δx = 1/2aΔt² + V₀Δt
-		h := erg.Potential()/(config.Mass*config.Gravity) + coefficient*dy // Δh = ΔU / (mg)
+		dx := 0.5*-config.Gravity*math.Pow(dt, 2) + erg.Velocity()*dt
+		h := (erg.Potential() / (config.Mass * config.Gravity) /* Δh = ΔU / (mg) */) + dx
 
 		erg.SetPotential(config.Mass * config.Gravity * h) // ΔU = mgΔh
 	}

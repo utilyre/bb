@@ -3,9 +3,6 @@ package energy
 import "math"
 
 type Energy interface {
-	// Returns falling status.
-	IsFalling() bool
-
 	// Returns potential energy.
 	Potential() float64
 
@@ -43,10 +40,6 @@ func NewEnergy(mass, potential, kinetic float64) Energy {
 	}
 }
 
-func (e *energy) IsFalling() bool {
-	return e.isFalling
-}
-
 func (e *energy) Potential() float64 {
 	return e.potential
 }
@@ -57,7 +50,7 @@ func (e *energy) Kinetic() float64 {
 
 func (e *energy) Velocity() float64 {
 	coefficient := 1.0
-	if e.IsFalling() {
+	if e.isFalling {
 		coefficient = -1.0
 	}
 
@@ -105,7 +98,7 @@ func (e *energy) ExertForce(force, time float64) {
 
 	v := v0 + dv
 	if v0*dv <= 0 && math.Abs(dv) > math.Abs(v0) {
-		e.isFalling = !e.IsFalling()
+		e.isFalling = !e.isFalling
 	}
 
 	e.kinetic = e.mass * math.Pow(v, 2) / 2
