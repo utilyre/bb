@@ -15,7 +15,7 @@ const (
 
 	// Gravity acceleration
 	// Unit: m/s²
-	Gravity float64 = 9.8
+	Gravity float64 = -9.8
 
 	// Initial height of basketball
 	// Unit: m
