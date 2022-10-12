@@ -67,7 +67,7 @@ func (e *energy) SetPotential(potential float64) {
 	e0 := *e
 
 	e.potential = potential
-	e.kinetic = e0.Mechanical() - e.Potential() // K₁ = E₀ - U₁
+	e.kinetic = e0.Mechanical() - e.Potential() // K = E₀ - U
 
 	// Ensures that potential and kinetic energies are unsigned values
 	if e.Potential() < 0 {
