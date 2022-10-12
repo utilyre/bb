@@ -101,5 +101,5 @@ func (e *energy) ExertForce(force, time float64) {
 		e.isFalling = !e.isFalling
 	}
 
-	e.kinetic = e.mass * math.Pow(v, 2) / 2
+	e.kinetic = 0.5 * e.mass * math.Pow(v, 2) // K = 1/2mV²
 }
