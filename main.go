@@ -58,9 +58,10 @@ func updater() {
 
 func renderer() {
 	cfg := pixelgl.WindowConfig{
-		Title:  "Bouncing Ball",
-		Bounds: pixel.R(0, 0, 2*config.Scale, (config.InitialHeight+1)*config.Scale),
-		VSync:  true,
+		Title:     "Bouncing Ball",
+		Bounds:    pixel.R(0, 0, 10*config.Radius*config.Scale, (config.InitialHeight+2)*config.Scale),
+		Resizable: true,
+		VSync:     true,
 	}
 
 	win, err := pixelgl.NewWindow(cfg)
