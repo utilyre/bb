@@ -59,7 +59,7 @@ func updater() {
 func renderer() {
 	cfg := pixelgl.WindowConfig{
 		Title:     "Bouncing Ball",
-		Bounds:    pixel.R(0, 0, 10*config.Radius*config.Scale, (config.InitialHeight+2)*config.Scale),
+		Bounds:    pixel.R(0, 0, (config.Radius+3)*config.Scale, (config.InitialHeight+2)*config.Scale),
 		Resizable: true,
 		VSync:     true,
 	}
@@ -103,7 +103,7 @@ func renderer() {
 			}
 		}
 
-		h := (erg.Potential() / (config.Mass * config.Gravity) /* Δh = ΔU / mg */) * config.Scale
+		h := erg.Potential() / (config.Mass * config.Gravity) // Δh = ΔU / mg
 		basketball.Draw(
 			win,
 			pixel.IM.Scaled(
@@ -112,7 +112,7 @@ func renderer() {
 			).Moved(
 				pixel.V(
 					win.Bounds().Center().X,
-					h+config.Radius*config.Scale,
+					(h+config.Radius)*config.Scale,
 				),
 			),
 		)
