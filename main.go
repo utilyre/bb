@@ -50,7 +50,7 @@ func updater() {
 		}
 
 		dy := -0.5*config.Gravity*math.Pow(dt, 2) + erg.Velocity()*dt // Δy = -½gΔt² + V₀Δt
-		h := (erg.Potential() / (config.Mass * config.Gravity) /* Δh = ΔU / (mg) */) + dy
+		h := (erg.Potential() / (config.Mass * config.Gravity) /* Δh = ΔU / mg */) + dy
 
 		erg.SetPotential(config.Mass * config.Gravity * h) // ΔU = mgΔh
 	}
@@ -103,7 +103,7 @@ func renderer() {
 			}
 		}
 
-		h := (erg.Potential() / (config.Mass * config.Gravity) /* Δh = ΔU / (mg) */) * config.Scale
+		h := (erg.Potential() / (config.Mass * config.Gravity) /* Δh = ΔU / mg */) * config.Scale
 		basketball.Draw(
 			win,
 			pixel.IM.Scaled(

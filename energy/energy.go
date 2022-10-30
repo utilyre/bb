@@ -55,7 +55,7 @@ func (e *energy) Velocity() float64 {
 	}
 
 	return coefficient *
-		math.Sqrt(2*e.Kinetic()/e.mass) // V = √(2K/m)
+		math.Sqrt(2*e.Kinetic()/e.mass) // V = √(2K / m)
 }
 
 func (e *energy) Mechanical() float64 {
@@ -94,12 +94,12 @@ func (e *energy) SetPotential(potential float64) {
 
 func (e *energy) ExertForce(force, time float64) {
 	v0 := e.Velocity()
-	dv := force * time / e.mass // ΔV = fΔt/m
+	dv := force * time / e.mass // ΔV = fΔt / m
 
 	v := v0 + dv
 	if v0*dv <= 0 && math.Abs(dv) > math.Abs(v0) {
 		e.isFalling = !e.isFalling
 	}
 
-	e.kinetic = 0.5 * e.mass * math.Pow(v, 2) // K = 1/2mV²
+	e.kinetic = 0.5 * e.mass * math.Pow(v, 2) // K = ½mV²
 }
